@@ -57,7 +57,9 @@ int main()
     }
     else
     {
-        for(int i=1;i<=n;i++)cout<<i<<" "<<dist[i]<<endl;///distance from 1 node;
+        int sum=0;
+        for(int i=1;i<=n;i++)sum+=dist[i],cout<<i<<" "<<dist[i]<<endl;///distance from 1 node;
+        cout<<"total cost "<<sum<<endl;
     }
     return 0;
 }
