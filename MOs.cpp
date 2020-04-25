@@ -1,99 +1,70 @@
-#include<bits/stdc++.h>
-using namespace std;
-#define mx 100005
-#define block 555
- 
-struct me
-{
-    int left,right,result;
- 
-}tree[4*mx];
- 
-int a[mx],cnt[4*mx],ans[mx],fi=0;
- 
-bool comp(me p1,me p2)
-{
-    if(p1.left / block != p2.left / block)
- 
-        return p1.left / block < p2.left /block;
- 
- 
-    return p1.right<p2.right;
-}
- 
- 
-void Add(int pos)
-{
-    int x=a[pos];
- 
-    if(cnt[x]==x)fi--;
-    cnt[x]++;
-    if(cnt[x]==x)fi++;
-    //cout<<fi<<endl;
-}
- 
-void Remove(int pos)
-{
-   int x=a[pos];
- 
-    if(cnt[x]==x)fi--;
-    cnt[x]--;
-    if(cnt[x]==x)fi++;
-}
- 
-int main()
-{
-    int n,q;
-    scanf("%d%d",&n,&q);
- 
-    for(int i=0;i<n;i++)
-    {
-        scanf("%d",a+i);
-        if(a[i]>n)a[i]=n+1;
+namespace MO{
+    const int MAXN = 100005;
+    const int MAXQ = 100005;
+
+    int Sz;
+    int A[MAXN];
+    int blkId[MAXN];
+    bool vis[MAXN];
+
+    struct Query{
+        int L,R,id;
+        Query(){}
+        Query(int x,int y,int i){L=x;R=y;id=i;}
+        bool operator<(const Query other) const{
+            int a = blkId[L]; int b = blkId[other.L];
+            return a == b ? (a & 1 ? (R > other.R) : (R < other.R)) : a < b;
+        }
+    }qry[MAXQ];
+    int perQ[MAXQ];
+
+    int MaxFreq = 0;
+    int CoC[MAXN];
+    int Count[MAXN];
+    void Check(int x){
+        if(!vis[x]){
+            vis[x]=1;
+            if(Count[A[x]]) CoC[Count[A[x]]]--;
+            Count[A[x]]++; CoC[Count[A[x]]]++;
+            if(CoC[MaxFreq + 1]) MaxFreq++;
+        }
+        else{
+            vis[x]=0;
+            CoC[Count[A[x]]]--; Count[A[x]]--;
+            if(Count[A[x]]) CoC[Count[A[x]]]++;
+            if(CoC[MaxFreq] == 0) MaxFreq--;
+        }
     }
- 
- 
-    for(int i=0;i<q;i++)
-    {
-        scanf("%d %d",&tree[i].left,&tree[i].right);
- 
-        tree[i].right--,tree[i].left--;
-        tree[i].result=i;
+}
+using namespace MO;
+
+int main(){
+    int N,Q;
+    scanf("%d %d",&N,&Q);
+
+    //Initiate Global
+    Sz=sqrt(N);
+    memset(vis,0,sizeof(vis));
+    memset(Count,0,sizeof(Count));
+    for(int i=0;i<=N;i++) blkId[i] = i/Sz;
+
+    for(int i=1;i<=N;i++) scanf("%d",&A[i]);
+    for(int i=1;i<=Q;i++){
+        int l,r;
+        scanf("%d %d",&l,&r);
+        qry[i] = Query(l,r,i);
     }
- 
-    sort(tree,tree+q,comp);
- 
-//    for(int i=0;i<4*n;i++)
-//    {
-//        cout<<tree[i].left<<" "<<tree[i].right<<" "<<tree[i].result<<endl;
-//    }
- 
-    int curentL=0,curentR=-1;
- 
-    for(int i=0;i<q;i++)
-    {
-        int l=tree[i].left,r=tree[i].right;
- 
-        while(curentR<r)
-           Add(++curentR);
- 
- 
-        while(curentR>r)
-           Remove(curentR--);
- 
- 
-        while(curentL<l)
-           Remove(curentL++);
- 
- 
-        while(curentL>l)
-           Add(--curentL);
- 
- 
-        ans[tree[i].result]=fi;
+    sort(qry+1,qry+Q+1);
+
+    int left = qry[1].L;
+    int right = left-1;
+
+    for(int i=1;i<=Q;i++){
+        Query now = qry[i];
+        while(left<now.L)  Check(left++);
+        while(left>now.L)  Check(--left);
+        while(right<now.R) Check(++right);
+        while(right>now.R) Check(right--);
+        perQ[now.id] = MaxFreq;
     }
- 
-    for(int i=0;i<q;i++)printf("%d\n",ans[i]);
- 
-    return 0;
 }
