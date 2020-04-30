@@ -46,9 +46,11 @@ int LIS()
     }
 
     printf("the LIS sequence: \n");
-
+    vector<int>ans;
     for(int i=tailindices[len-1]; i>=0; i=preindices[i])
-        printf("%d ",ar[i]);
+        ans.push_back(ar[i]);
+    reverse(ans.begin(),ans.end());
+    for(auto it:ans)printf("%d ",it);
 
     printf("\n");
 
