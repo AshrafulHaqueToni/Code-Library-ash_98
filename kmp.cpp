@@ -16,7 +16,7 @@ vector<int> build_lps(string s)
         }
         else
         {
-            if(idx!=0)tem[i]=tem[idx-1];
+            if(idx!=0)idx=tem[idx-1];
             else tem[i]=idx,i++;
         }
     }
