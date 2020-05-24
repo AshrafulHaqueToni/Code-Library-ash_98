@@ -38,24 +38,29 @@ void init(int root)
     }
 }
 
-int lca(int u,int v)
+ int lca(int u,int v)
 {
     if(depth[u]<depth[v])swap(u,v);
-    int diff=depth[u]-depth[v];
-
-    for(int i=LOG-1;i>=0;i--)
+    int log=1;
+    while(1)
     {
-        if(diff>=(1<<i))
+        int next=log+1;
+        if(depth[u]<(1<<next))break;
+        log++;
+    }
+
+    for(int i=log;i>=0;i--)
+    {
+        if(depth[u]-(1<<i)>=depth[v])
         {
-            diff-=(1<<i);
             u=par[u][i];
         }
     }
     if(u==v)return u;
 
-    for(int i=LOG-1;i>=0;i--)
+    for(int i=log;i>=0;i--)
     {
-        if(par[u][i]!=par[v][i])
+        if(par[u][i]!=-1 && par[u][i]!=par[v][i])
         {
             u=par[u][i];
             v=par[v][i];
@@ -63,6 +68,7 @@ int lca(int u,int v)
     }
     return par[v][0];
 }
+
 
 int dist(int u,int v)
 {
