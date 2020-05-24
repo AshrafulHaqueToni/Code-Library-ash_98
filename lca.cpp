@@ -2,12 +2,11 @@
 using namespace std;
 
 #define mx 100005
-#define LOG 22
 
-int par[mx][LOG];
+int par[mx][25];
 int depth[mx];
 vector<int>g[mx];
-int n;
+int n,LOG;
 
 void dfs(int u,int p,int lvl)
 {
@@ -92,7 +91,7 @@ int kth_parent(int u,int k)
 int main()
 {
     scanf("%d",&n);
-
+    LOG=log2(n)+1;
     for(int i=1;i<n;i++)
     {
         int x,y;
