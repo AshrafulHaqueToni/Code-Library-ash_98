@@ -45,7 +45,7 @@ void solve()
    }
    for(int i=1;i<=n;i++)
     if(!visit[i])
-     dfs(1,1);
+     dfs(i,1);
    printf("Scenario #%d:\n",++ii);
    if(f)
    {
