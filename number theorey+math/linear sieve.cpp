@@ -13,7 +13,7 @@ vector<int>prime;
 int phi[mx];
 
 
-void sieve(int n)
+void seive(int n)
 {
     fill(is_composite,is_composite+n,false);
     phi[1]=1;
