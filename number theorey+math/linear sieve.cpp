@@ -8,14 +8,13 @@ using namespace std;
 int a[mx+10];
 char ch[mx+10];
 int n;
-bool is_composite[mx];
+bitset<mx>is_composite;
 vector<int>prime;
 int phi[mx];
 
 
 void seive(int n)
 {
-    fill(is_composite,is_composite+n,false);
     phi[1]=1;
 
     for(int i=2;i<=n;i++)
