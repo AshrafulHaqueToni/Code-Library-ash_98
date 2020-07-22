@@ -12,6 +12,7 @@ int m,k,ii;
 /// |a1 U a2 U a3|=|a1|+|a2|+|a3|-|a1 union a2|-|a2 union a3|-|a1 union a3|+|a1 union a2 union a3|
 /// if number of cadidate is odd do add or do substract
 /// time complexity 2^m.
+/// for better perform use recusive
 
 ll re1,n;
 
