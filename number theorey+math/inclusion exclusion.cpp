@@ -4,7 +4,7 @@ using namespace std;
 #define mx 100005
 #define ll long long
 
-int ar[(1<<16)+5];
+int ar[20];
 
 int m,k,ii;
 /// koto gulo number ace[1,n] jara a1 or a2 or a3...,am dara divide
@@ -17,6 +17,7 @@ ll re1,n;
 
 void func(int idx,int cnt,ll lcm)
 {
+    if(lcm>n)break;
     if(idx==m)
     {
         if(cnt==0)return;
@@ -46,6 +47,7 @@ void solve()
             {
                 cnt++;
                 lcm=(lcm*ar[j])/__gcd(lcm,(ll)ar[j]);
+                if(lcm>n)break;
             }
         }
         if(cnt&1)re+=n/lcm;
