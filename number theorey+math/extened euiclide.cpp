@@ -1,25 +1,21 @@
 #include<bits/stdc++.h>
 using namespace std;
+#define ll long long
 
-int Extended_Euclidean(int a,int b,int &x,int &y)
+struct GCD_type { ll x, y, d; };
+
+GCD_type ex_GCD(ll a, ll b)
 {
-    if(b==0)
-    {
-        x=1;
-        y=0;
-        return a;
-    }
-    int d=Extended_Euclidean(b,a%b,y,x);
-    y=y-(a/b)*x;
-    return d;
+    if (b == 0) return {1, 0, a};
+    GCD_type pom = ex_GCD(b, a % b);
+    return {pom.y, pom.x - a / b * pom.y, pom.d};
 }
 
 int main()
 {
-  int a,b,x,y;
-  x=0,y=1; /// you can assign any value of x,y .you can find infinite solution for x and y
-  scanf("%d%d",&a,&b);
-  int gcd=Extended_Euclidean(a,b,x,y);
-  printf("%d\n",gcd);
-  printf("%d %d\n",x,y);
+  ll a,b;
+  scanf("%lld%lld",&a,&b);
+  auto pom=ex_GCD(a,b);
+  printf("%lld\n",pom.d);
+  printf("%lld %lld\n",pom.x,pom.y);
 }
