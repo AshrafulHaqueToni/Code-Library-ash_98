@@ -1,61 +1,58 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+#define mx 100005
 #define ll long long
 
-#define mx 100006
+int cnt[mx];
+ll ans[mx];
+int n,m,k,ii;
 
-vector<int>v[mx];
-int ans[mx];
-
-void divisors()
+void solve()
 {
-    for(int i=1; i<mx; i++)
+    scanf("%d",&n);
+    int boro=0;
+    ll re=0;
+    for(int i=1;i<=n;i++)
     {
-        for(int j=i; j<mx; j+=i)
-            v[j].push_back(i);
+        int x;
+        scanf("%d",&x);
+        boro=max(boro,x);
+        cnt[x]++;
     }
+    for(int i=boro;i>=1;i--)
+    {
+        ll tot=0;
+        for(int j=i;j<=boro;j+=i)
+        {
+            tot+=cnt[j];
+            ans[i]-=ans[j];
+        }
+        if(tot<2)            /// if want k length set then use k
+        {
+            ans[i]=0;
+        }
+        else
+        {
+            tot=(tot*(tot-1))/2;  /// if want k length set then  nCk. n=tot;
+            ans[i]+=tot;
+            re+=ans[i]*i;
+        }
+    }
+    printf("%lld\n",re);
 }
+
+/*
+5
+1 1 1 1 1
+*/
 
 int main()
 {
-    divisors();
-
-    int n,re=0;
-
-    scanf("%d",&n);
-
-    for(int i=0; i<n; i++)
-    {
-        int val;
-        scanf("%d",&val);
-
-        for(auto it: v[val])
-            ans[it]++;//cout<<it<<" ";
-
-            //cout<<endl;
-    }
-
-
-    for(int i=mx-1; i>=1; i--)
-    {
-        int cur=ans[i];
-
-        cur=(cur*(cur-1))/2;
-
-        for(int j=i+i; j<mx-1; j+=i)
-            cur-=ans[j];
-
-            ans[i]=cur;
-
-        re+=i*cur;
-
-        //cout<<i<<endl;
-
-    }
-
-    printf("%d\n",re);
-
-
-    return 0;
+   //freopen("in.txt","r",stdin);
+   //freopen("out.txt","w",stdout);
+   int t=1;
+  // scanf("%d",&t);
+   while(t--)solve();
+   return 0;
 }
