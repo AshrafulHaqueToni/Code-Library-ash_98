@@ -8,7 +8,7 @@ using namespace std;
 
 int phi[mx];
 
-void seive(int n)
+void eulor_totient(int n)
 {
     for(int i=2; i<=n; i++) phi[i]=i;
     for(int i=2;i<=n;i+=2)
