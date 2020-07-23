@@ -5,6 +5,7 @@ using namespace std;
 #define mod 1000000007
 #define mx 4000005
 
+///it works for this condition .for(int i=1;i<n;i++)for(int j=i+1;j<=n;j++)sum+=gcd(i,j); thats why phi[1]=0;
 
 int phi[mx];
 ll re[mx];
@@ -27,8 +28,8 @@ void eulor_totient(int n)
     }
     for(int i=1; i<=n; i++)
     {
-        for(int j=2;j*i<=n;j++)
-        {
+        for(int j=2;j*i<=n;j++)   /// if want  for(int i=1;i<=n;i++)for(int j=1;j<=n;j++)sum+=gcd(i,j)
+        {                         /// this loop start from 1
             re[i*j]+=i*(ll)phi[j];
         }
     }
