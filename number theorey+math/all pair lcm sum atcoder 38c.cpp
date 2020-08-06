@@ -1,95 +1,78 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-#define ll long long
+#define mx 1000005
+#define ll long long 
 #define mod 998244353
-#define mx 1000009
 
-ll ans[mx];
-ll sumsq[mx];
-ll sqsum[mx];
+ll ar[mx];
+ll ace[mx];
+int m,n,k,ii,dek;
 
-vector<int>v[mx];
-
-ll bigmod(ll n,ll p)
+ll bigmod(ll e,ll x)
 {
-    if(p==0)
-        return 1;
-    if(p==1)
-        return (n+mod)%mod;
-    if(p%2)
-        return (bigmod(n,p-1)*n+mod)%mod;
-    else
-    {
-        ll x=bigmod(n,p/2);
-        return (x*x+mod)%mod;
-    }
+    if(!x)return 1;
+    ll p=bigmod(e,x/2);
+    p=(p*p)%mod;
+    if(x%2)p=(p*e)%mod;
+    return p;
 }
 
-ll modinverse(ll n)
+void solve()
 {
-    return bigmod(n,mod-2)%mod;
+	scanf("%d",&n);
+	int boro=0;
+	for(int i=1;i<=n;i++)
+	{
+		scanf("%d",&m);
+		ar[m]++;
+		boro=max(boro,m);
+	}
+	ll re=0;
+
+	for(int i=boro;i>=1;i--)
+	{
+		ll sumsq=0;
+		ll sqsum=0;
+		for(int j=i;j<=boro;j+=i)
+		{
+			sumsq+=ar[j]*j;
+			sqsum+=ar[j]*j*j;
+			sumsq%=mod;
+			sqsum%=mod;
+		}
+		sumsq*=sumsq;
+		sumsq%=mod;
+		ll val=(sumsq-sqsum)%mod;
+		if(val<0)val+=mod;
+		val*=bigmod(2,mod-2);
+		val%=mod;
+		for(int j=i;j<=boro;j+=i)
+		{
+			val=(val-ace[j])%mod;
+			if(val<0)val+=mod;
+		}
+		ace[i]=val;
+		re+=(val*bigmod(i,mod-2))%mod;
+		re%=mod;
+		//cout<<val<<endl;
+
+	}
+	printf("%lld\n",re);
+
 }
-
-void divisors()
-{
-    for(int i=1; i<mx; i++)
-    {
-        for(int j=i; j<mx; j+=i)
-            v[j].push_back(i);
-    }
-}
-
-///(a*b)/x+(b*c)/x+(c*a)/x=  (ab+bc+ca)/x
-///(a+b+c)^2=a*a+b*b+c*c+2(ab+bc+ca)
-///(ab+bc+ca)=((a+b+c)^2-(aa+bb+cc))/2
-
 
 int main()
 {
-    divisors();
-
-    int n;
-    scanf("%d",&n);
-
-    for(int i=0; i<n; i++)
-    {
-        int val;
-
-        scanf("%d",&val);
-
-        for(int it:v[val])
-        {
-            sumsq[it]=((sumsq[it]+val)%mod);
-            sqsum[it]=(sqsum[it]+bigmod(val,2))%mod;
-        }
-    }
-
-    ll re=0;
-
-    for(ll i=mx-1; i>=1; i--)
-    {
-        ll cur=(bigmod(sumsq[i],2)-sqsum[i]);
-
-        cur=(cur+mod)%mod;
-
-        for(ll j=i+i; j<mx; j+=i)
-        {
-            cur-=ans[j];
-            cur=(cur+mod)%mod;
-        }
-
-        ans[i]=cur;
-
-        re=(re+(cur*modinverse(i))%mod)%mod;
-    }
-
-    re=(re*modinverse(2))%mod;
-
-    printf("%lld\n",re);
-
-
-
-
-    return 0;
+	#ifndef ONLINE_JUDGE
+	freopen("in.txt","r",stdin);
+	freopen("out.txt","w",stdout);
+	#endif
+	int t=1;
+	//scanf("%d",&t);
+	while(t--)
+	{
+		solve();
+	}
+	return 0;
 }
