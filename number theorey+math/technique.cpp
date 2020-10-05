@@ -33,7 +33,36 @@
            .......
            n                0    ==  (nC0)*(nCn) == (nCn)*(nCn)== (nCn)^2  [nCr=nC(n-r)]
            
-           so,  (nC0)^2+(nC1)^2+(nC2)^2+....+(nCn)^2=(2*n)Cn
+           so,  (nC0)^2+(nC1)^2+(nC2)^2+....+(nCn)^2=(2*n)Cn.
+6. # of factor of two in n!
+   n/2+n/4+n/8+ n/16+.....  (takes floor value)
+7. nCr%2=?
+    you can do it using *6 ideas( using factor 2).
+     Lucas Theorem:
+      at first convert n and c in binary representation.
+      then multiply all bit (n's ith bit C r's ith bit).
+      like n=8,c=2
+      8=1000
+      2=0010
+      so result is= 1C0*0C0*0C1*0C0,  [is there any 0C1 then it will be divided by 2]
+      More specifically if r is a submask of n then it will not be divisable by 2.
+          
+     nCr% any prime under 10^6=?
+        just convert mod number representation system.
+      
+    
+8. # of ways permutation this sting ?
+          AAABBBCCCDDEFF . length=14
+          14C3*11C3*8C3*5C2*3C1*2C2 ways
+          some modification it will be =14!/(3!*3!*3!*2!*1!*2!)
+9. how many ways you can go to (0,0) to (n,m) cordinate(you can only up and right).
+   main observations i need to move x axis n times and y axis m times.
+   so just found the permuation of m times U and n times R.
+   like n=2,m=3,
+   son RRUUU = 5!/(2!*3!)
+   if there are more than two dimension you will do just total moves time! / (x axis moves times!* y axis moves time! *.....)
+10. 
+          
    
    
     
