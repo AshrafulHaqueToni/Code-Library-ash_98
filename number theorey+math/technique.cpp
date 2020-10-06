@@ -25,7 +25,7 @@
 5.
    (nC0)^2+(nC1)^2+(nC2)^2+....+(nCn)^2=(2*n)Cn
    proof:
-        if we part 2*n numbers in two groups (1,2....n) and (n+1,n+2,...,n+n)
+        if we do partition 2*n numbers in two groups (1,2....n) and (n+1,n+2,...,n+n)
         and we can choose n numbers from two groups
         * group-1   ----  group-2
            0                n     ==  (nC0)*(nCn) == (nC0)*(nC0)== (nC0)^2  [nCr=nC(n-r)]
@@ -62,6 +62,38 @@
    son RRUUU = 5!/(2!*3!)
    if there are more than two dimension you will do just total moves time! / (x axis moves times!* y axis moves time! *.....)
 10. 
+   stars and bars theorem:
+   you have n balls k bucket # of ways insert the ball into bucket such that every bucket has more than 0 balls
+   n=5 ,k=3
+    k1+k2+k3=n ; ki>=1
+   .| .| . . .
+   .| . . |. .
+   so here . means start
+   ans | mean bars .  total ways is (n-1)C(k-1).
+        
+   you have n balls k bucket # of ways insert the ball into bucket such that every bucket has any numbers of ball
+   n=5 ,k=3
+   k11+k22+k33=n ; ki>=0
+   k11=k1-1,k22=k2-1,k33=k3-1
+   k1-1+k2-1+k3-1=n
+   ->k1+k2+k3=n+3=n+k
+    so the result is (n+k-1)C(k-1)
+       
+    if every bucket has minimum ball requierd condition then
+    just chage this (k1-x)+(k2-xx)=n equation.
+11.
+    Catalan Numbers:
+    (i) you are given n opening bracker and n closing bracket # of ways  permutation this bracket sqquence such that it is a valid bracker sequence.
+        we can do it by selecting the position.
+        but it takes O(n*n) time.
+         the form is Cn=summation of Ck*Cn-k-1 where k=0 to n-1. base case C1=1,C0=1. [it takes 0(n) times]
+          In catalan number Cn=(1/(n+1))*(2nCn). [it takes 0(1) times]
+         If you do google you can found more application of catalan numbers.
+ 12.
+             
+   
+    
+   
           
    
    
