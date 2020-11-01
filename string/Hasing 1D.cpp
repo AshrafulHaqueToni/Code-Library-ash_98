@@ -10,7 +10,7 @@ int n,m,k,ii;
 
 ll base[]= {307,367};
 ll mod[]= {1040160883,1066517951};
-///backup prime,1e9+7,1e9+9,1072857881
+///backup prime,1e9+7,1e9+9,1072857881,1000004249
 ll powbase[3][mx];
 ll Hash[3][mx];
 
