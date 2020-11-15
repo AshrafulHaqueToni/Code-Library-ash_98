@@ -14,7 +14,7 @@ int n,m,ii,k;
 vector<int> Prefix_function()
 {
 	vector<int>pi(m);
-	for(int i=1;i<n;i++)
+	for(int i=1;i<m;i++)
 	{
        int j=pi[i-1];
        while(j>0 && ch1[i]!=ch1[j])j=pi[j-1];
