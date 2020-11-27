@@ -16,6 +16,20 @@ namespace Segment_Tree
 		}
 		Lazy[node][f]=0;
 	}
+	
+	void init(int node,int be,int en,int f)
+	{
+		Lazy[node][f]=0;
+		if(be==en)
+		{
+			Tree[node][f]=ar[be];
+			return;
+		}
+		int mid=(be+en)/2;
+		init(node*2,be,mid,f);
+		init(node*2+1,mid+1,en,f);
+		Tree[node][f]=Tree[node*2][f]+Tree[node*2+1][f];
+	}
 
 	void update(int node,int be,int en,int pos,int val,int f)
 	{
