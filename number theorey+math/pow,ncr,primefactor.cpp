@@ -44,5 +44,6 @@ void fact_cal()
     {
         fact[i]=(fact[i-1]*i)%mod;
     }
-    for(int i=0;i<=mx-3;i++)inv[i]=bigmod(fact[i],mod-2);
+    inv[mx-3]=bigmod(fact[mx-3],mod-2);
+    for(int i=mx-4;i>=0;i--)inv[i]=(inv[i+1]*(i+1))%mod;
 }
