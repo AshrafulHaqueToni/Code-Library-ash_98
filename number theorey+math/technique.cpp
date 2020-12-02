@@ -106,7 +106,7 @@
         we can do it by selecting the position.
         but it takes O(n*n) time.
          the form is Cn=summation of Ck*Cn-k-1 where k=0 to n-1. base case C1=1,C0=1. [it takes 0(n) times]
-          In catalan number Cn=(1/(n+1))*(2nCn). [it takes 0(1) times]
+          In catalan number Cn=(1/(n+1))*((2*n)Cn). [it takes 0(1) times]
          If you do google you can found more application of catalan numbers.
  12.
              
