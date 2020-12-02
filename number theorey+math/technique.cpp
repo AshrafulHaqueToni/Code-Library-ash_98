@@ -81,6 +81,25 @@
        
     if every bucket has minimum ball requierd condition then
     just chage this (k1-x)+(k2-xx)=n equation.
+        
+    -------------------------------------------------------
+        
+    k1+k2+k3+k4+k5=n; 0<=ki<x
+    
+    for 0<=ki, total result is RESULT1= (n+k-1)C(k-1)  but some part is overlaping when ki<x .
+        
+    Now ki<x, this part we will do using exclusion and inclusion ,
+
+    at first calculation # of way when just one ki>=x
+      and the way is val1= kC1*(n-x+k-1)C(k-1)
+    for second calculation,
+                       val2= kC2*(n-(2*x)+k-1)C(k-1)
+    after valk calculation Final value will be,
+    RESULT2=((-k)^1)*val1+((-k)^2)*val2+((-k)^1)*val3+.....((-k)^k)*valk  ;  /// But some time we have not calculate overall val1 to valk . 
+                                                                           Because (n-(x*kth)+k-1) will be <0 
+    So, Final Result is = RESULT1-RESULT2
+                        
+    
 11.
     Catalan Numbers:
     (i) you are given n opening bracker and n closing bracket # of ways  permutation this bracket sqquence such that it is a valid bracker sequence.
