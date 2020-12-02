@@ -1,3 +1,6 @@
+
+/// # of ways put n items in k similar boxes
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -16,6 +19,7 @@ ll func(int nn,int kk)
     if(kk==1)return 1;
 
     if(nn==kk)return 1;
+    if(kk==0)return 0;
 
 
     ll &val=dp[nn][kk];
