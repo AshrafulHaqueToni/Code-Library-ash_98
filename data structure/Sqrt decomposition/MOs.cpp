@@ -1,70 +1,122 @@
-namespace MO{
-    const int MAXN = 100005;
-    const int MAXQ = 100005;
+// Created by ash_98
 
-    int Sz;
-    int A[MAXN];
-    int blkId[MAXN];
-    bool vis[MAXN];
+/// In every query find max frequency
 
-    struct Query{
-        int L,R,id;
-        Query(){}
-        Query(int x,int y,int i){L=x;R=y;id=i;}
-        bool operator<(const Query other) const{
-            int a = blkId[L]; int b = blkId[other.L];
-            return a == b ? (a & 1 ? (R > other.R) : (R < other.R)) : a < b;
-        }
-    }qry[MAXQ];
-    int perQ[MAXQ];
+#include<bits/stdc++.h>
+using namespace std;
 
-    int MaxFreq = 0;
-    int CoC[MAXN];
-    int Count[MAXN];
-    void Check(int x){
-        if(!vis[x]){
-            vis[x]=1;
-            if(Count[A[x]]) CoC[Count[A[x]]]--;
-            Count[A[x]]++; CoC[Count[A[x]]]++;
-            if(CoC[MaxFreq + 1]) MaxFreq++;
+#define mx 100005
+#define ll long long
+#define mod 1000000007
+
+char ch[mx];
+int n,m,ii,k;
+
+namespace MO
+{
+    const int N=100005;
+    const int Q=100005;
+
+    int ar[N],BlockId[N],ans[Q];
+    bool vis[N];
+
+    struct node
+    {
+    	int l,r,id;
+    	node(){}
+    	node(int l,int r,int id)
+    	{
+    		this->l=l;
+    		this->r=r;
+    		this->id=id;
+    	}
+        bool operator < (const node& u)
+        {
+        	int a=BlockId[l],b=BlockId[u.l];
+        	if(a==b)
+        	{
+        		return (a & 1 ? (r > u.r) : (r < u.r));
+        	}
+        	else return a<b;
+
         }
-        else{
-            vis[x]=0;
-            CoC[Count[A[x]]]--; Count[A[x]]--;
-            if(Count[A[x]]) CoC[Count[A[x]]]++;
-            if(CoC[MaxFreq] == 0) MaxFreq--;
-        }
+    }query[Q];
+
+    int boro=0;
+    int cnt[mx],cnt_tot[mx];
+
+    void check(int pos)
+    {
+    	if(vis[pos])
+    	{
+    		
+    		cnt_tot[cnt[ar[pos]]]--;
+    		cnt[ar[pos]]--;
+    		if(cnt[ar[pos]])cnt_tot[cnt[ar[pos]]]++;
+    		if(cnt_tot[boro]==0)boro--;
+
+    	}
+    	else
+    	{
+    		if(cnt[ar[pos]])cnt_tot[cnt[ar[pos]]]--;
+    		cnt[ar[pos]]++;
+    		cnt_tot[cnt[ar[pos]]]++;
+    		if(cnt_tot[boro+1])boro++;
+
+    	}
+    	vis[pos]^=1;
     }
+
 }
+
 using namespace MO;
 
-int main(){
-    int N,Q;
-    scanf("%d %d",&N,&Q);
+void solve()
+{
+	int q;
+	boro=0;
+	scanf("%d%d",&n,&q);
+	int sz=sqrt(n);
+	for(int i=1;i<=n;i++)
+	{
+		BlockId[i]=i/sz;
+		vis[i]=false;
+		scanf("%d",&ar[i]);
+	}
+	memset(cnt,0,sizeof(cnt));
+	memset(cnt_tot,0,sizeof(cnt_tot));
 
-    //Initiate Global
-    Sz=sqrt(N);
-    memset(vis,0,sizeof(vis));
-    memset(Count,0,sizeof(Count));
-    for(int i=0;i<=N;i++) blkId[i] = i/Sz;
+	for(int i=1;i<=q;i++)
+	{
+		int x,y;
+		scanf("%d%d",&x,&y);
+		query[i]=node(x,y,i);
+	}
+	sort(query+1,query+q+1);
 
-    for(int i=1;i<=N;i++) scanf("%d",&A[i]);
-    for(int i=1;i<=Q;i++){
-        int l,r;
-        scanf("%d %d",&l,&r);
-        qry[i] = Query(l,r,i);
-    }
-    sort(qry+1,qry+Q+1);
+	int left=query[1].l;
+	int right=left-1;
 
-    int left = qry[1].L;
-    int right = left-1;
+	for(int i=1;i<=q;i++)
+	{
+		node Now=query[i];
 
-    for(int i=1;i<=Q;i++){
-        Query now = qry[i];
-        while(left<now.L)  Check(left++);
-        while(left>now.L)  Check(--left);
-        while(right<now.R) Check(++right);
-        while(right>now.R) Check(right--);
-        perQ[now.id] = MaxFreq;
-    }
+		while(left<Now.l)check(left++);
+		while(left>Now.l)check(--left);
+		while(right<Now.r)check(++right);
+		while(right>Now.r)check(right--);
+
+        ans[Now.id]=boro;
+	}
+
+	for(int i=1;i<=q;i++)printf("%d\n",ans[i]);
+
+}
+
+int main()
+{
+	int t=1;
+	scanf("%d",&t);
+	while(t--)solve();
+	return 0;
 }
