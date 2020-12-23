@@ -13,7 +13,7 @@ int par[mx][25];
 
 namespace MO
 {
-    const int N=40005;
+    const int N=100005;
     const int Q=100005;
 
     int ar[N],br[N],BlockId[N],ans[Q];
@@ -132,7 +132,7 @@ void solve()
 {
 	int q;
 	scanf("%d%d",&n,&q);
-	LOG=log2(n);
+	LOG=log2(n)+1;
 	Time=0;
 	re=0;
 	sz=sqrt(n);
