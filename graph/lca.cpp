@@ -1,8 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-#define mx 100005
-
 int par[mx][25];
 int depth[mx];
 vector<int>g[mx];
@@ -86,22 +81,4 @@ int kth_parent(int u,int k)
         if(u==-1)return u;
     }
     return u;
-}
-
-int main()
-{
-    scanf("%d",&n);
-    LOG=log2(n)+1;
-    for(int i=1;i<n;i++)
-    {
-        int x,y;
-        scanf("%d%d",&x,&y);
-        g[x].push_back(y);
-        g[y].push_back(x);
-    }
-    init(1);
-    cout<<dist(6,8)<<endl;
-    cout<<kth_parent(8,1)<<endl;
-
-    return 0;
 }
