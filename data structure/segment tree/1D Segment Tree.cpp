@@ -2,7 +2,7 @@ namespace Segment_Tree
 {
 	const int N=200005;
 	int Tree[N*4];
-	int Lazy[mx*4];
+	int Lazy[N*4];
 	int ar[N];
 
 	void Relax(int node,int be,int en)
