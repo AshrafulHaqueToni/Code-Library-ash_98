@@ -61,7 +61,52 @@ bool Pattern(string &text,string &pat)
     }
     return false;
 }
+pair<int,int> Patterntern_occurence(string Text ,string Pattern)
+{
+    int n=Text.size();
+    int m=Pattern.size();
+    int be=1,en=n;
 
+    while(be<en)
+    {
+        int mid = (en+be)/2;
+        int ok=0;
+        for(int i=0;i<m;i++)
+        {
+            if(Text[i+sa[mid]]>Pattern[i]){ok=1;break;}
+            if(Text[i+sa[mid]]<Pattern[i]){ok=-1;break;}
+        }
+        if(ok+1) en=mid;
+        else be=mid+1;
+    }
+
+    bool ok = 1;
+    for(int i=0;i<m;i++) if(Text[i+sa[be]]!=Pattern[i]){ok=0;break;}
+    if(!ok) return {-1,-1};
+
+    pair<int,int> re;
+    re.first=be;
+    be=1,en=n;
+    while(be<en)
+    {
+        int mid = (en+be)/2;
+        int ok=0;
+        for(int i=0;i<m;i++)
+        {
+            if(Text[i+sa[mid]]>Pattern[i]){ok=1;break;}
+            if(Text[i+sa[mid]]<Pattern[i]){ok=-1;break;}
+        }
+        if(ok>0) en=mid;
+        else be=mid+1;
+    }
+
+    ok = 1;
+    for(int i=0;i<m;i++) if(Text[i+sa[en]]!=Pattern[i]){ok=0;break;}
+    if(!ok) en--;
+    re.second=en;
+
+    return re;
+}
 void solve()
 {
 	string s;
@@ -72,5 +117,16 @@ void solve()
      for(int i=1;i<=n;i++) cout<<sa[i]<<" "; cout<<endl;
     for(int i=0;i<n;i++) cout<<Rank[i]<<" "; cout<<endl;
     for(int i=1;i<=n;i++) cout<<LCP[i]<<" ";
+     int q;
+    cin>>q;
+    for(int i=1;i<=q;i++)
+    {
+    	string t;
+    	cin>>t;
+    	pair<int,int>re=Patterntern_occurence(s,t);
+    	if(re.second==-1)printf("0\n");
+    	else printf("%d\n",re.second-re.first+1 );
+
+    }
 
 }
