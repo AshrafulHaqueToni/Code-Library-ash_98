@@ -42,6 +42,26 @@ void buildLCP(string s,int *sa,int n){
     return;
 }
 
+// Pattern Subtring hisbe ace kina
+bool Pattern(string &text,string &pat)
+{
+    int lo=1,hi=text.size();
+    while(lo<=hi)
+    {
+        int mid=(lo+hi)/2;
+        int ok=0;
+        for(int i=0;i<pat.size();i++)
+        {
+            if(text[i+sa[mid]]>pat[i]) {ok=1;break;}
+            if(text[i+sa[mid]]<pat[i]) {ok=-1;break;}
+        }
+        if(!ok) return true;
+        if(ok>0) hi=mid-1;
+        else lo=mid+1;
+    }
+    return false;
+}
+
 void solve()
 {
 	string s;
