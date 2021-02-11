@@ -129,7 +129,7 @@ int main()
 
     ll val=sqrt(num);
 
-    if(Miller(num,25))
+    if(Miller(num,5))
     {
         ans*=2;
     }
