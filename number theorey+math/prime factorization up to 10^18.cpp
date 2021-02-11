@@ -164,7 +164,7 @@ int main()
 
     if(n>1)
     {
-        if(Miller(n,20))
+        if(Miller(n,5))
             m[n]++;
         else
         {
