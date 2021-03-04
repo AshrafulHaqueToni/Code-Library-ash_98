@@ -1,9 +1,12 @@
+// Created by ash_98
+ 
 #include<bits/stdc++.h>
 using namespace std;
-
-#define mx 105
+ 
+#define mx 205
 #define ll long long
 #define INF 1e12
+int n,m,ii,k;
 
 const ll eps = 0;
 
@@ -15,18 +18,28 @@ struct edge {
 
 struct Dinic {
     int s,t,d[mx], ptr[mx] ;
+    //int Id[mx][mx];
     vector<edge>e;
     vector<int>g[mx];
     void init() {
         e.clear();
         memset(d,0,sizeof(d));
         for(int i = 0; i < mx ; i++)g[i].clear();
+        // for(int i=0;i<mx;i++)
+        // {
+        // 	for(int j=0;j<mx;j++)
+        // 	{
+        // 		Id[i][j]=0;
+        // 	}
+        // }
     }
     void addEdge(int a,int b,ll cap, int x = -1, int y= -1) {
         edge e1 = { a, b, cap, 0, 1, x, y } ;
         edge e2 = { b, a, 0, 0, 0, x, y } ;
+      //  Id[a][b]=e.size();
         g[a].push_back((int)e.size());
         e.push_back(e1);
+      //  Id[b][a]=e.size();
         g[b].push_back((int)e.size());
         e.push_back(e2);
     }
