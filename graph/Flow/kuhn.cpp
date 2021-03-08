@@ -38,10 +38,11 @@ struct BPM
     }
     int Matching(int num)
     {
+	// Be Careful with this section. when passin num.
         memset(Left,-1,sizeof Left);
         memset(Right,-1,sizeof Right);
         int re = 0;
-        for(int i = 0; i < num; i++)
+        for(int i = 1; i <=num; i++)
         {
             memset(Done,0,sizeof Done);
             if(Bipar_Matching(i)) re++;
