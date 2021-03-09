@@ -1,3 +1,5 @@
+/// for weight see lightoj 1150 solution
+
 #define mx 40005
 #define ll long long
 int n,m,ii,k;
