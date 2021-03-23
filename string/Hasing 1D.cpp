@@ -1,83 +1,93 @@
+/* Tested by https://codeforces.com/contest/1200/problem/E */
+
 #include<bits/stdc++.h>
 using namespace std;
-
-#define mx 100005
+ 
+#define mx 1000005
 #define ll long long
 
-int ar[mx];
-char ch[mx];
-int n,m,k,ii;
-
-ll base[]= {307,367};
-ll mod[]= {1040160883,1066517951};
-///backup prime,1e9+7,1e9+9,1072857881,1000004249
-ll powbase[3][mx];
-ll Hash[3][mx];
-
-void pre()
+int n,m,ii,k;
+char ch[mx],ch1[mx];
+/*
+backup prime
+307,367
+1040160883,1066517951
+1e9+7,1e9+9,1072857881,1000004249
+*/
+struct Hash_dui
 {
-    powbase[0][0]=powbase[1][0]=1;
-    for(int j=0; j<2; j++)
+	ll base,mod;
+	int sz;
+	vector<int>Rev,Forw,P;
+	Hash_dui(){}
+	Hash_dui(const char* s,ll b,ll m)
+	{
+		sz=strlen(s),base=b,mod=m;
+		Rev.resize(sz+1,0),Forw.resize(sz+1,0),P.resize(sz+1,1);
+        for(int i=1;i<=sz;i++)P[i]=(base*P[i-1])%mod;
+        for(int i=1;i<=sz;i++)Forw[i]=(Forw[i-1]*base+(s[i-1]-'a'+1))%mod; /// digit hole s[i-1]-'0'
+        for(int i=sz;i>=1;i--)Rev[i]=(Rev[i+1]*base+(s[i-1]-'a'+1))%mod;  ///alphabet hole s[i-1]-'a'
+	}
+    void Single_char_ad(char cc)
     {
-        for(int i=1; i<mx-3; i++)
-        {
-            powbase[j][i]=(powbase[j][i-1]*base[j])%mod[j];
-        }
+    	P.push_back((P.back()*base)% mod);
+        Forw.push_back((Forw.back()*base+(cc-'a'+1))% mod);
     }
-}
-
-void build()
-{
-    int len=strlen(ch);
-    for(int i=len-1;i>=0;i--)
+    inline int Range_Hash(int l,int r)
     {
-        for(int j=0;j<2;j++)
-        {
-            Hash[j][i]=(Hash[j][i+1]*base[j]+(ch[i]-'0'))%mod[j]; ///alphabet hole ch[i]-'a'+1
-            Hash[j][i]=(Hash[j][i]+mod[j])%mod[j];
-        }
+    	int re_hash=Forw[r+1]-((ll)P[r-l+1]*Forw[l]%mod);
+    	if(re_hash<0)re_hash+=mod;
+    	return re_hash;
     }
-}
-
-pair<ll,ll>HashVal(int i,int j)
+    inline int Reverse_Hash(int l,int r)
+    {
+    	int re_hash=Rev[l+1]-((ll)P[r-l+1]*Rev[r+2]%mod);
+    	if(re_hash<0)re_hash+=mod;
+    	return re_hash;
+    }
+};
+struct Hash_Main
 {
-    ll val1=(Hash[0][i]-(Hash[0][j+1]*powbase[0][j-i+1])%mod[0])%mod[0];
-    ll val2=(Hash[1][i]-(Hash[1][j+1]*powbase[1][j-i+1])%mod[1])%mod[1];
-    if(val1<0)val1+=mod[0];
-    if(val2<0)val2+=mod[1];
-    return {val1,val2};
-}
-
+	Hash_dui h1,h2;
+	Hash_Main(){}
+	Hash_Main(const char* s)
+	{
+		h1=Hash_dui(s,1949313259, 2091573227);
+		h2=Hash_dui(s,1997293877, 2117566807);
+	}
+	void Char_Add(char cc)
+	{
+		h1.Single_char_ad(cc);
+		h2.Single_char_ad(cc);
+	}
+	inline ll Range_Hash(int l,int r) /// O base index
+	{
+		return ((ll)h1.Range_Hash(l,r)<<32)^h2.Range_Hash(l,r);
+	}
+	inline ll Reverse_Hash(int l,int r) /// O base index
+	{
+		return ((ll)h1.Reverse_Hash(l,r)<<32)^h2.Reverse_Hash(l,r);
+	}
+};
 void solve()
 {
-     scanf("%s",ch);
-     build();
-     int q;
-     scanf("%d",&q);
-     while(q--)
-     {
-         int x,y,x1,y1;///0 base index
-         scanf("%d%d%d%d",&x,&y,&x1,&y1);
-         pair<int,int>p,p1;
-         p=HashVal(x,y);
-                  p1=HashVal(x1,y1);
-         cout<<p.first<<" "<<p.second<<" "<<p1.first<<" "<<p1.second<<endl;
-         if(p==p1)
-         {
-             printf("They are equal subarray\n");
-         }
-         else printf("They are not equal subarray\n");
+	int n;
+	scanf("%d%s",&n,ch);
+	string re=ch;
+	Hash_Main h_ek(ch);
+	int sz= re.size();
+	for(int i=2;i<=n;i++)
+	{
+		scanf("%s",ch1);
+		Hash_Main h_dui(ch1);
+		int sz2=strlen(ch1);
 
-     }
-}
-
-int main()
-{
-    //freopen("in.txt","r",stdin);
-    //freopen("out.txt","w",stdout);
-    int t=1;
-    //scanf("%d",&t);
-    pre();
-    while(t--)solve();
-    return 0;
+		int jabe=0;
+		for(int j=1;j<=min(sz,sz2);j++)
+		{
+			if(h_ek.Range_Hash(sz-j,sz-1)==h_dui.Range_Hash(0,j-1))jabe=j;
+		}
+		for(int j=jabe;j<sz2;j++)h_ek.Char_Add(ch1[j]),sz++,re+=ch1[j];
+	}
+   cout<<re<<"\n";
 }
