@@ -11,15 +11,16 @@ int ar[mx];
 char ch[mx],ch1[mx];
 int n,m,ii,k;
 
-vector<int> Prefix_function()
+vector<int> Create_Pi_Table(const char* s)
 {
-	vector<int>pi(m);
-	for(int i=1;i<m;i++)
+	int sz=strlen(s);
+	vector<int>pi(sz);
+	for(int i=1;i<sz;i++)
 	{
-       int j=pi[i-1];
-       while(j>0 && ch1[i]!=ch1[j])j=pi[j-1];
-       if(ch1[j]==ch1[i])j++;
-       pi[i]=j;
+	       int j=pi[i-1];
+	       while(j>0 && s[i]!=s[j])j=pi[j-1];
+	       if(s[j]==s[i])j++;
+	       pi[i]=j;
 	}
 	return pi;
 }
@@ -30,7 +31,7 @@ void solve()
 	scanf("%s%s",ch,ch1);
 	n=strlen(ch);
 	m=strlen(ch1);
-	vector<int> pi=Prefix_function();
+	vector<int> pi=Create_Pi_Table(ch1);
 	for(int i=0;i<m;i++)printf("%d\n",pi[i] );
 
 }
