@@ -23,7 +23,7 @@ struct Hash_dui
 	Hash_dui(const char* s,ll b,ll m)
 	{
 		sz=strlen(s),base=b,mod=m;
-		Rev.resize(sz+1,0),Forw.resize(sz+1,0),P.resize(sz+1,1);
+		Rev.resize(sz+2,0),Forw.resize(sz+2,0),P.resize(sz+2,1);
         for(int i=1;i<=sz;i++)P[i]=(base*P[i-1])%mod;
         for(int i=1;i<=sz;i++)Forw[i]=(Forw[i-1]*base+(s[i-1]-'a'+1))%mod; /// digit hole s[i-1]-'0'
         for(int i=sz;i>=1;i--)Rev[i]=(Rev[i+1]*base+(s[i-1]-'a'+1))%mod;  ///alphabet hole s[i-1]-'a'
