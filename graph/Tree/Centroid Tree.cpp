@@ -51,8 +51,8 @@ int query(int u)
 int lca(int u,int v)
 {
 	if(lvl[u]<lvl[v])swap(u,v);
-	while(lvl[u]>lvl[u])u=p[u];
-	while(u!=v)u=[u],v=p[v];
+	while(lvl[u]>lvl[v])u=p[u];
+	while(u!=v && p[u]!=-1)u=p[u],v=p[v];
 	return u;
 }
 int dist(int u,int v)
