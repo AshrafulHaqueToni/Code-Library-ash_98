@@ -247,3 +247,6 @@
 
 
         If you do google you can find more applications of catalan numbers.
+           
+12. 
+           sequence search : https://oeis.org/

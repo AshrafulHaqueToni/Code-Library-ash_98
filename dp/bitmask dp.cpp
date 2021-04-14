@@ -20,6 +20,8 @@ bool chk(int N,int pos)
 {
     return (bool)(N &(1<<pos));
 }
+///int id= __builtin_ctz(mask); its give the position of the first one from the left
+/// int tot= __builtin_popcount(mask); number of one bit .
 
 int func(int mask)
 {
