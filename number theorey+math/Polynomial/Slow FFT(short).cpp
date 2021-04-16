@@ -1,3 +1,5 @@
+/* calculation er jonno array gulo besi size diye nite hobe
+na hole Runtime error asbe */
 #define VI vector<int>
 typedef complex < double > base ;
 const double PI = 2*acos( 0.0 );
