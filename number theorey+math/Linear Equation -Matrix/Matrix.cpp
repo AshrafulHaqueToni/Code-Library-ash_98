@@ -20,6 +20,7 @@ inline ll inv(ll n) {return bigMod(n,MOD-2);}
 inline ll Mul(ll a,ll b) {return (a*b)%MOD;}
 inline ll Div(ll a,ll b) {return Mul(a,inv(b));}
 
+/* 1 base row columun index */
 struct Matrix{
     int row, col;
     ll m[MAX][MAX];
