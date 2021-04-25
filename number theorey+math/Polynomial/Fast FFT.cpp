@@ -1,7 +1,7 @@
 #define VI vector<int>
 #define CN complex<double>
 const double PI = 2*acos( 0.0 );
-
+/* there was chace to got pericision loss */
 namespace FFT
 {
 	#define op operator
