@@ -189,6 +189,38 @@ namespace Polygonal {
         if (n > 1) m--;
         return m;
     }
+    
+    double get_MaxArea_Trianle_In_Convexhull(Point* p,int n)
+    {
+       int a=0,b=1,c=2;
+       int ba=a,bb=b,bc=c;
+       if(n<3)return 0;
+       while(1)
+       {
+          while(1)
+          {
+             while(getArea(p[a],p[b],p[c])<=getArea(p[a],p[b],p[(c+1)%n]))c=(c+1)%n;
+             if(getArea(p[a],p[b],p[c])<=getArea(p[a],p[(b+1)%n],p[c]))
+             {
+               b=(b+1)%n;
+               continue;
+             }
+             else break;
+          }
+          if(getArea(p[a],p[b],p[c])>getArea(p[ba],p[bb],p[bc]))
+          {
+            ba=a;
+            bb=b;
+            bc=c;
+          }
+          a=(a+1)%n;
+          if(a==b)b=(b+1)%n;
+          if(b==c)c=(c+1)%n;
+          if(a==0)break;
+       }
+
+       return getArea(p[ba],p[bb],p[bc]);
+    }
 
     int isPointInPolygon (Point o, Point* p, int n) {
         int wn = 0;
