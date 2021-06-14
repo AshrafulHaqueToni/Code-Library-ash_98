@@ -233,7 +233,7 @@ namespace Polygonal {
             if (k > 0 && d1 <= 0 && d2 > 0) wn++;
             if (k < 0 && d2 <= 0 && d1 > 0) wn--;
         }
-        return wn ? -1 : 1;
+        return wn ? 1 : -1;
     }
 
     void rotatingCalipers(Point *p, int n, vector<Segment>& sol) {
