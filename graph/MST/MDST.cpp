@@ -10,7 +10,7 @@ struct edge {
         return u < o.u;
     }
 };
-int dmst(vector<edge> &edges, int root, int n) {
+int dmst(vector<edge> &edges, int root) { // 0 base node 0 to n-1
     int ans = 0;
     int cur_nodes = n;
     while (true) {
