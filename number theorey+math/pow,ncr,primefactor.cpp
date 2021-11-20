@@ -30,7 +30,11 @@ void sieve()
 
 ll bigmod(ll e,ll x)
 {
-    if(!x)return 1;
+    if(!x)
+    {
+        if(e)return 1;
+        return 0;
+    }
     ll p=bigmod(e,x/2);
     p=(p*p)%mod;
     if(x%2)p=(p*e)%mod;
