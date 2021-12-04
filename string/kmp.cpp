@@ -40,7 +40,7 @@ void kmp(string text,string pattern)
         if(j==len2)
         {
             f=true;
-            cout<<"fount at: "<<(i-len2)<<endl;
+            cout<<"found at: "<<(i-len2)<<endl;
             j=lps[j-1];
             cnt++;///koy bar ace sei tar jonno
 
