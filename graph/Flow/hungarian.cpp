@@ -1,6 +1,6 @@
 
 #define INF 1e18
-pair<ll,vector<int>> hungarain(vector<vector<ll>>mat,int f,int sz)
+pair<ll,vector<int>> hungarian(vector<vector<ll>>mat,int f,int sz)
 {
     vector<int>par(sz+1,0),way(sz+1,0),match(sz+1,0);
     vector<bool>vis(sz+1,0);
