@@ -30,6 +30,23 @@ bool chk(int N,int pos)
     return (bool)(N &(1<<pos));
 }
 
+/*
+iterate all the submask of a mask
+
+for(int mask=1;mask<(1<<sz);mask++)
+    {
+        int tmask=mask&(mask-1);
+        
+        while(tmask)
+        {
+            cout<<tmask<<endl;
+           // dp[mask]=min(dp[mask],dp[tmask]+dp[mask^tmask]);
+            tmask=(tmask-1)&mask;
+        }
+        
+
+    }
+*/
 
 void solve()
 {
