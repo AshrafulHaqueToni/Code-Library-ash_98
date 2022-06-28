@@ -24,7 +24,7 @@ int main()
         Diff[y+1]-=val;
     }
     for(int i=1;i<=n;i++)ar[i]=Diff[i]+ar[i-1];
-    for(int i=1;i<=n;i++)printf("%lld%c",ar[i],(i==n)?'\n':' ');
+    for(int i=1;i<=n;i++)printf("%lld ",ar[i]);
 
     return 0;
 }
