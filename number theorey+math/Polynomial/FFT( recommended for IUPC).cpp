@@ -90,7 +90,8 @@ namespace ntt
         for(int i=0;i<need;i++) res[i]=fa[i].x+0.5;
         return res;
     }
-
+    //eq = 0: 4 FFTs in total
+    //eq = 1: 3 FFTs in total
     vector<int> multiply(vector<int> &a,vector<int> &b,int m,int eq=0)
     {
         int need=a.size()+b.size()-1;
@@ -150,9 +151,15 @@ namespace ntt
         }
         return res;
     }
-    vector<int> square(vector<int> &a,int m)
-    {
-        return multiply(a,a,m,1);
+    vector<ll> pow(vector<ll>& a, int p) {
+        vector<ll> res;
+        res.emplace_back(1);
+        while(p) {
+        if(p & 1) res = multiply(res, a);
+        a = multiply(a, a, 1);
+        p >>= 1;
+        }
+        return res;
     }
 };
 using namespace ntt;
