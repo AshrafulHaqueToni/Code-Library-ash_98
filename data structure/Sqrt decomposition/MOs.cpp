@@ -45,11 +45,8 @@ namespace MO
     int boro=0;
     int cnt[mx],cnt_tot[mx];
 
-    void check(int pos)
-    {
-    	if(vis[pos])
-    	{
-    		
+    void check(int pos) {
+    	if(vis[pos]){
     		cnt_tot[cnt[ar[pos]]]--;
     		cnt[ar[pos]]--;
     		if(cnt[ar[pos]])cnt_tot[cnt[ar[pos]]]++;
@@ -66,23 +63,6 @@ namespace MO
     	}
     	vis[pos]^=1;
     }
-	
-    ///Subtree niye kaj korle
-	
-    // vector<int> g[N];
-    // int Euler[N],st[N],en[N],Time;
-
-    // void dfs(int u,int p)
-    // {
-    //    st[u]=++Time;
-    //    Euler[Time]=u;
-    //    for(int v:g[u])
-    //    {
-    //    	 if(v==p)continue;
-    //    	 dfs(v,u);
-    //    }
-    //    en[u]=Time;
-    // }
 
 }
 
