@@ -1,5 +1,5 @@
 
-/// # of ways put n items in k similar boxes
+/// # of ways put n items in k not empty similar boxes
 
 #include<bits/stdc++.h>
 using namespace std;

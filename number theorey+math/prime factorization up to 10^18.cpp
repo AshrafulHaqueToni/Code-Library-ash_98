@@ -1,195 +1,213 @@
 #include<bits/stdc++.h>
-
+#include <bits/stdtr1c++.h>
 using namespace std;
+ 
 
-#define ll unsigned long long
+#define ll long long
 
-#define N 2100000
+namespace ftor{
+    /// Note use only for factorization
+    #define MLIM 1000 /// Used in Brent Pollard Rho
+    #define PLIM 10  /// Miller-Rabin Test depth
+    #define MAX 10000 /// Small primes generated in this range
+    #define SQR 101 /// Square root of MAX
 
-bool Mark[N+5];
+    int p, P[MAX];
+    bitset <MAX> prime;
+    tr1::unordered_map <long long, long long> mp;
 
-vector<ll>v;
+    inline void Sieve(){
+        int i, j, d;
+        prime.reset();
+        prime[2] = true;
+        for (i = 3; i < MAX; i++, i++) prime[i] = true;
 
+        for (i = 3; i < SQR;){
+            d = i << 1;
+            for (j = (i * i); j < MAX; j += d) prime[j] = false;
 
-bool seive()
-{
-    for(int i=3; i*i<N; i+=2)
-    {
-        if(!Mark[i])
-        {
-            for(int j=i*i; j<N; j+=i*2)
-                Mark[j]=1;
+            do{
+                i++;
+            } while (!prime[++i]);
+        }
+
+        p = 0;
+        for (i = 0; i < MAX; i++){
+            if (prime[i]) P[p++] = i;
         }
     }
-    v.push_back(2);
 
-    for(int i=3; i<N; i+=2)
-        if(!Mark[i])
-            v.push_back(i);
-}
-
-ll big_Multiply(ll a,ll b,ll n)
-{
-    if(b==0)
-        return 0;
-
-    if(b%2==0)
-    {
-        ll s=big_Multiply(a,b/2,n);
-        return (2*s)%n;
-    }
-    else
-        return (a+big_Multiply(a,b-1,n))%n;
-}
-
-ll pollard_rho(ll n)
-{
-    if(n==1)
-        return 1;
-
-    if(n%2==0)
-        return 2;
-
-    srand(time(NULL));
-
-    ll x=2+rand()%(n-2);
-
-    ll y=x;
-
-    ll c=1+rand()%(n-1);
-
-    ll d=1;
-
-    while(d==1)
-    {
-        x=(big_Multiply(x,x,n)+c+n)%n;
-
-        y=(big_Multiply(y,y,n)+c+n)%n;
-
-        y=(big_Multiply(y,y,n)+c+n)%n;
-
-        d=__gcd((x>=y? x-y:y-x),n);
-
-        if(d==n)
-            return pollard_rho(n);
+    inline long long mul(long long a, long long b, long long m, long double fuck) {
+       long long c = (long long)(fuck * a * b);
+       a *= b;
+       a -= c * m;
+       if (a >= m) a -= m;
+       if (a < 0) a += m;
+       return a;
     }
 
-    return d;
+    inline long long expo(long long x, long long n, long long m, long double fuck){
+        long long res = 1;
 
-}
+        while (n){
+            if (n & 1) res = mul(res, x, m, fuck);
+            x = mul(x, x, m, fuck);
+            n >>= 1;
+        }
 
-ll bin_Exp(ll b,ll e,ll m)
-{
-    if(e==0)
-        return 1;
-    if(e%2==0)
-    {
-        ll x=bin_Exp(b,e/2,m);
-        return big_Multiply(x,x,m);
-    }
-    else
-        return (big_Multiply(b,bin_Exp(b,e-1,m),m));
-}
-
-
-bool is_compair(ll a,ll s, ll d,ll n)
-{
-    ll x=bin_Exp(a,d,n);
-
-    if(x==1 || x== n-1)
-        return false;
-
-    for(int i=1; i<s; i++)
-    {
-        x=big_Multiply(x,x,n);
-        if(x==n-1)
-            return false;
-
+        return res;
     }
 
-    return true;
-}
+    inline bool miller_rabin(long long p, long double fuck, int lim){
+        long long a, s, m, x, y;
+        s = p - 1, y = p - 1;
+        while (!(s & 1)) s >>= 1;
 
-bool Miller(ll n,int iter)
-{
-    if(n<=3)
-    {
-        return n==2 || n==3;
+        while (lim--){
+            x = s;
+            a = (((rand() << 15) ^ rand()) % y) + 1;
+            m = expo(a, x, p, fuck);
+
+            while ((x != y) && (m != 1) && (m != y)){
+                m = mul(m, m, p, fuck);
+                x <<= 1;
+            }
+            if ((m != y) && !(x & 1)) return false;
+        }
+
+        return true;
     }
 
-    if(n%2==0)
-        return 0;
+    inline unsigned long long gcd(unsigned long long u, unsigned long long v){
+        if (!u) return v;
+        if (!v) return u;
+        if (u == 1 || v == 1) return 1;
 
-    ll s=0,d=n-1;
+        int shift = __builtin_ctzll(u | v);
+        u >>= __builtin_ctzll(u);
+        do{
+            v >>= __builtin_ctzll(v);
+            if (u > v)
+                v ^= u ^= v ^= u;
+            v = v - u;
+        } while (v);
 
-    while(d%2==0)
-    {
-        s++,d/=2;
+        return u << shift;
     }
 
-    for(int i=1; i<=iter; i++)
-    {
-        ll a=2+rand()%(n-3);
+    inline long long brent_pollard_rho(long long n){
+        long double fuck = (long double)1 / n;
+        if (miller_rabin(n, fuck, PLIM)) return n;
 
-        if(is_compair(a,s,d,n))
-            //continue;
+        const long long m = MLIM;
+        long long i, k, a, x, y, ys, r, q, g;
+        g = mp[n];
+        if (g) return g;
 
-        return false;
+        do{
+            a = ((rand() << 15) ^ rand()) % n;
+        }
+        while (!a || a == (n - 2));
+
+        r = 1, q = 1;
+        y = ((rand() << 15) ^ rand()) % n;
+
+        do{
+            x = y;
+            for (i = 0; i < r; i++){
+                y = mul(y, y, n, fuck);
+                y += a;
+                if (y < a) y += (ULLONG_MAX - n) + 1;
+                y %= n;
+            }
+
+            k = 0;
+            do{
+                for (i = 0; (i < m) && (i < (r - k)); i++){
+                    ys = y;
+                    y = mul(y, y, n, fuck) + a;
+                    if (y < a) y += (ULLONG_MAX - n) + 1;
+                    y %= n;
+                    q = mul(q, abs(x - y), n, fuck);
+                }
+
+                g = gcd(q, n);
+                k += m;
+
+            }
+            while ((k < r) && (g == 1));
+
+            r <<= 1;
+        }
+        while (g == 1);
+
+        if (g == n){
+            do{
+                ys = mul(ys, ys, n, fuck) + a;
+                if (ys < a) ys += (ULLONG_MAX - n) + 1;
+                ys %= n;
+                g = gcd(abs(x - ys), n);
+            }
+            while (g == 1);
+        }
+
+        return (mp[n] = g);
     }
-    return true;
-}
 
-int main()
-{
-    ll n;
-    scanf("%llu",&n);
+    vector <long long> factorize(long long n){
+        int i, d, len;
+        long long m, k, x;
+        vector <long long> v, factors;
 
-    seive();
-
-    map<ll,int>m;
-
-    printf("%llu= ",n);
-
-    for(int i=0; i<v.size() && v[i]*v[i]<=n; i++)
-    {
-        if(n%v[i]==0)
-        {
-            while(n%v[i]==0)
-            {
-                m[v[i]]++;
-                n/=v[i];
+        for (i = 0; i < p; i++){
+            while (!(n % P[i])){
+                n /= P[i];
+                v.push_back(P[i]);
             }
         }
+        if (n == 1) return v;
+
+        x = brent_pollard_rho(n);
+        factors.push_back(x);
+        factors.push_back(n / x);
+        len = factors.size();
+
+        do{
+            m = factors[len - 1];
+            factors.pop_back(), len--;
+
+            if (m > 1){
+                if (miller_rabin(m, (long double)1 / m, PLIM)){
+                    v.push_back(m);
+                    for (i = 0; i < len; i++){
+                        k = factors[i];
+                        while (!(k % m)){
+                            k /= m;
+                            v.push_back(m);
+                        }
+                        factors[i] = k;
+                    }
+                }
+                else{
+                    x = brent_pollard_rho(m);
+                    factors.push_back(x);
+                    factors.push_back(m / x);
+                    len += 2;
+                }
+            }
+        }
+        while (len);
+
+        sort(v.begin(), v.end());
+        // v.resize(distance(v.begin(),unique(v.begin(), v.end())));
+        return v;
     }
 
-    if(n>1)
-    {
-        if(Miller(n,5))
-            m[n]++;
-        else
-        {
-            ll x=pollard_rho(n);
-            m[x]++;
-            m[n/x]++;
-        }
+    void init(){
+        Sieve();
+        mp.clear();
+        srand(time(0));
     }
-
-    for(auto it=m.begin(); it!=m.end(); it++)
-    {
-        if(it!=m.begin())
-        {
-            printf("*%llu",it->first);
-        }
-        else
-            printf("%llu",it->first);
-        if(it->second>1)
-        {
-            printf("^%d",it->second);
-        }
-    }
-    printf("\n");
-
-
-    return 0;
-
 }
+
+using namespace ftor;
