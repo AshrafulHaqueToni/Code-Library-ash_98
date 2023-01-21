@@ -33,18 +33,18 @@ void dfs2(int u)
 
 void clean()
 {
-    for(int i=1;i<=node+2;i++)
+    for(int i=0;i<=node+2;i++)
     {
         g[i].clear();
         g_rev[i].clear();
         component[i].clear();
+        mp[i]=0;
     }
     option.clear();
     cnt=0;
     st.clear();
     en.clear();
     dekhi.clear();
-    memset(mp,0,sizeof(mp));
 }
 
 void solve(int ii)
