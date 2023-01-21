@@ -2,16 +2,15 @@
 
 using namespace std;
 
+ // persistent Trie
+ 
 // find maximum value (x^a[j]) in the range (l,r) where l<=j<=r
-const int N = 1e5 + 100;
-const int K = 15;
-
-struct node_t;
-typedef node_t * pnode;
-
+const int N = 2e5 + 05;
+const int K = 30;
+ 
 struct node_t {
   int time;
-  pnode to[2];
+  node_t* to[2];
   node_t() : time(0) {
     to[0] = to[1] = 0;
   }
@@ -19,31 +18,34 @@ struct node_t {
     if (!this) return false;
     return time >= l;
   }
-  pnode clone() {
-    pnode cur = new node_t();
-    if (this) {
-      cur->time = time;
-      cur->to[0] = to[0];
-      cur->to[1] = to[1];
-    }
-    return cur;
-  }
 };
-
+typedef node_t* pnode;
+ 
+pnode clone(pnode p) {
+  pnode cur = new node_t();
+  if (p) {
+    cur->time = p -> time;
+    cur->to[0] = p -> to[0];
+    cur->to[1] = p -> to[1];
+  }
+  return cur;
+}
+ 
 pnode last;
 pnode version[N];
-
+ 
 void insert(int a, int time) {
-  pnode v = version[time] = last = last->clone();
+  pnode v = clone(last);
+  version[time] = last = v;
   for (int i = K - 1; i >= 0; --i) {
     int bit = (a >> i) & 1;
     pnode &child = v->to[bit];
-    child = child->clone();
+    child = clone(child);
     v = child;
     v->time = time;
   }
 }
-
+ 
 int query(pnode v, int x, int l) {
   int ans = 0;
   for (int i = K - 1; i >= 0; --i) {
