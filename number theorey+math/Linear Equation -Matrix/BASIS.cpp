@@ -39,4 +39,4 @@ struct BASIS {
         }
         return ret;
     }
-}
+};
