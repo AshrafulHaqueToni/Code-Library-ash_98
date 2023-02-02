@@ -1,5 +1,5 @@
 struct BASIS {
-    int basis[d];
+    int basis[d]; // d = 31,63
     int sz;
  
     void init() {
